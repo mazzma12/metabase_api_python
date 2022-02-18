@@ -1,16 +1,22 @@
-import requests
-import getpass
+import os
 
+import requests
+
+
+MB_PASSWORD = os.getenv("MB_PASSWORD")
+MB_USERNAME = os.getenv("MB_USERNAME")
+MB_DOMAIN = os.getenv("MB_DOMAIN")
+MB_BASIC_AUTH_USERNAME = os.getenv("MB_BASIC_AUTH_USERNAME")
+MB_BASIC_AUTH_PASSWORD = os.getenv("MB_BASIC_AUTH_PASSWORD")
 class Metabase_API():
 
-    def __init__(self, domain, email, password=None, basic_auth=False):
-
+    def __init__(self, domain=MB_DOMAIN, email=MB_USERNAME, password=MB_PASSWORD, basic_auth=(MB_BASIC_AUTH_USERNAME, MB_BASIC_AUTH_PASSWORD)):
         self.domain = domain.rstrip('/')
         self.email = email
-        self.password = getpass.getpass(prompt='Please enter your password: ') if password is None else password
+        self.password = password
         self.session_id = None
         self.header = None
-        self.auth = (self.email, self.password) if basic_auth else None
+        self.auth = basic_auth if any(basic_auth) else None
         self.authenticate()
 
 

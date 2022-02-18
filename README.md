@@ -15,6 +15,14 @@ from metabase_api import Metabase_API
 
 mb = Metabase_API('https://...', 'username', 'password')  # if password is not given, it will prompt for password
 ```
+Alternatively, you can define the login information in environment variables and they will be loaded automatically.
+```
+MB_PASSWORD=
+MB_USERNAME=
+MB_DOMAIN=
+MB_BASIC_AUTH_USERNAME= # If any
+MB_BASIC_AUTH_PASSWROD= # If any
+```
 ## Functions
 ### REST functions (get, post, put, delete)
 Calling Metabase API endpoints (documented [here](https://github.com/metabase/metabase/blob/master/docs/api-documentation.md)) can be done using the corresponding REST function in the wrapper.  
