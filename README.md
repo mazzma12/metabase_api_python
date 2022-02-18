@@ -20,6 +20,8 @@ Alternatively, you can define the login information in environment variables and
 MB_PASSWORD=
 MB_USERNAME=
 MB_DOMAIN=
+MB_BASIC_AUTH_USERNAME= # If any
+MB_BASIC_AUTH_PASSWROD= # If any
 ```
 ## Functions
 ### REST functions (get, post, put, delete)
