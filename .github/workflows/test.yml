@@ -1,14 +1,12 @@
-# This workflow will install Python dependencies, run tests and lint with a variety of Python versions
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
-
-name: Python package
+name: test
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, dev ]
     paths:
       - 'metabase_api/**'
       - 'tests/**'
+      - '.github/workflows/test*' 
   pull_request:
     branches: [ master ]
     paths:
@@ -17,7 +15,7 @@ on:
 
 jobs:
   build:
-
+    if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -42,18 +40,14 @@ jobs:
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+    - name: Initial Setup before running tests
+      run: |
+        chmod +x ./tests/initial_setup.sh
+        ./tests/initial_setup.sh -v 0.47.1
     - name: Test with pytest
-      env: 
-        LOGIN_DOMAIN : ${{ secrets.LOGIN_DOMAIN }}
-        LOGIN_USERNAME : ${{ secrets.LOGIN_USERNAME }}
-        LOGIN_PASSWORD : ${{ secrets.LOGIN_PASSWORD }}
       run: |
         pytest
     - name: Generate Report
-      env: 
-        LOGIN_DOMAIN : ${{ secrets.LOGIN_DOMAIN }}
-        LOGIN_USERNAME : ${{ secrets.LOGIN_USERNAME }}
-        LOGIN_PASSWORD : ${{ secrets.LOGIN_PASSWORD }}
       run: |
         pip install coverage
         coverage run -m unittest
